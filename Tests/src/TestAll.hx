@@ -13,6 +13,8 @@ class TestAll{
 		Assert.equals(1, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
 		Assert.equals(0, gcUsage.numDeallocations);
+		Assert.equals(128, gcUsage.bytesUsed);
+		Assert.equals(0, gcUsage.bytesReserved);
 	}
 	
 	public function testArrayofIntFirstInsert(){	
@@ -24,6 +26,8 @@ class TestAll{
 		Assert.equals(2, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
 		Assert.equals(0, gcUsage.numDeallocations);
+		Assert.equals(128, gcUsage.bytesUsed);
+		Assert.equals(0, gcUsage.bytesReserved);
 	}
 	
 	public function testMapIntIntFirstInsert(){	
@@ -35,6 +39,8 @@ class TestAll{
 		Assert.equals(3, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
 		Assert.equals(0, gcUsage.numDeallocations);
+		Assert.equals(128, gcUsage.bytesUsed);
+		Assert.equals(0, gcUsage.bytesReserved);
 	}
 	
 	public function testMapIntIntClearViaKeys(){
@@ -51,6 +57,8 @@ class TestAll{
 		Assert.equals(3, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
 		Assert.equals(0, gcUsage.numDeallocations);
+		Assert.equals(128, gcUsage.bytesUsed);
+		Assert.equals(0, gcUsage.bytesReserved);
 	}
 	
 	public function testMapIntIntClearViaNewMap(){
@@ -70,6 +78,8 @@ class TestAll{
 		Assert.equals(7, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
 		Assert.equals(2, gcUsage.numDeallocations);
+		Assert.equals(256, gcUsage.bytesUsed);
+		Assert.equals(0, gcUsage.bytesReserved);
 	}
 	
 	

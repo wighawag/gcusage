@@ -39,8 +39,24 @@ class GcUsage{
 	public var numAllocations(default,null) : Int = -1;
 	public var numReallocations(default,null) : Int = -1;
 	public var numDeallocations(default,null) : Int = -1;
+	public var bytesUsed(get,never) : Int;
+	public var bytesReserved(get,never) : Int;
+	
 	var threadNum : Int = -1;
+	var bytesUsedBefore : Int = 0;
+	var bytesUsedAfter : Int = 0;
+	var bytesReservedBefore : Int = 0;
+	var bytesReservedAfter : Int = 0;
+	
 	private function new(){
+	}
+	
+	function get_bytesUsed() : Int{
+		return bytesUsedAfter - bytesUsedBefore;
+	}
+	
+	function get_bytesReserved() : Int{
+		return bytesReservedAfter - bytesReservedBefore;
 	}
 	
 	private function begin(){
@@ -48,12 +64,15 @@ class GcUsage{
 		threadNum = untyped  __global__.__hxcpp_hxt_start_telemetry(true, true);
 		untyped  __global__.__hxcpp_hxt_ignore_allocs(1);
 		cpp.vm.Gc.run(true);
+		bytesReservedBefore = untyped __global__.__hxcpp_gc_reserved_bytes();
+		bytesUsedBefore = untyped __global__.__hxcpp_gc_used_bytes();
 		untyped  __global__.__hxcpp_hxt_ignore_allocs(-1);
 	}
 	
-	
 	private function end(){
 		cpp.vm.Gc.run(true);
+		bytesReservedAfter = untyped __global__.__hxcpp_gc_reserved_bytes();
+		bytesUsedAfter = untyped __global__.__hxcpp_gc_used_bytes();
 		untyped  __global__.__hxcpp_hxt_ignore_allocs(1);
 		untyped  __global__.__hxcpp_hxt_stash_telemetry();
 		gatherData();
