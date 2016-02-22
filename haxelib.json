@@ -1,0 +1,13 @@
+{
+	"name":"gcusage",
+	"license":"MIT",
+	"tags":["gc","hxcpp", "cpp", "allocation", "performance", "telemetry"],
+	"description":"lib to gather gc usage via code. Also serve as live doc on how haxe/hxcpp deal with allocation for various types",
+	"contributors":["wighawag"],
+	"releasenote":"first release",
+	"version":"0.1.0",
+	"url":"https://github.com/wighawag/gcusage",
+	"classPath":"Sources",
+	"dependencies":{
+	}
+}

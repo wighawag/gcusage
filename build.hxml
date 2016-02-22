@@ -1,0 +1,9 @@
+-cpp bin/cpp
+-main TestAll
+-cp Sources
+-cp Tests/src
+-lib utest
+-D HXCPP_TELEMETRY
+-D HXCPP_STACK_TRACE
+
+-cmd bin\cpp\TestAll || bin/cpp/TestAll
