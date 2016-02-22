@@ -1,7 +1,7 @@
 import haxe.macro.Expr;
 import haxe.macro.Context;
-class Gc{
-	macro public static function gatherGcUsageFor(expr : Expr) : Expr{
+class GcUsage{
+	macro public static function gatherFrom(expr : Expr) : Expr{
 		var pos = Context.currentPos();
 		if(!Context.defined("cpp") || !Context.defined("HXCPP_TELEMETRY") || !Context.defined("HXCPP_STACK_TRACE")){
 			Context.error("only cpp target with '-D HXCPP_TELEMETRY' and '-D HXCPP_STACK_TRACE' supported",pos);
@@ -9,7 +9,7 @@ class Gc{
 		}
 		
 		var newExpr = macro {
-		var __gcUsage = @:privateAccess new Gc.GcUsage();
+		var __gcUsage = @:privateAccess new GcUsage();
 		@:privateAccess __gcUsage.begin();
 	};
 
@@ -34,11 +34,8 @@ class Gc{
 				expr;
 		}
 	}
-}
-
-#if !macro
-class GcUsage{
 	
+	#if !macro
 	public var numAllocations(default,null) : Int = -1;
 	public var numReallocations(default,null) : Int = -1;
 	public var numDeallocations(default,null) : Int = -1;
@@ -95,5 +92,8 @@ class GcUsage{
 		
 	}
 
+	
+	#end
 }
-#end
+
+

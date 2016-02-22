@@ -6,7 +6,7 @@ import utest.ui.Report;
 class TestAll{
 	
 	public function testArrayofInt(){	
-		var gcUsage = Gc.gatherGcUsageFor({
+		var gcUsage = GcUsage.gatherFrom({
 			var array = new Array<Int>();
 		});
 		
@@ -16,7 +16,7 @@ class TestAll{
 	}
 	
 	public function testArrayofIntFirstInsert(){	
-		var gcUsage = Gc.gatherGcUsageFor({
+		var gcUsage = GcUsage.gatherFrom({
 			var array = new Array<Int>();
 			array[0] = 1;
 		});
@@ -27,7 +27,7 @@ class TestAll{
 	}
 	
 	public function testMapIntIntFirstInsert(){	
-		var gcUsage = Gc.gatherGcUsageFor({
+		var gcUsage = GcUsage.gatherFrom({
 			var map = new Map<Int,Int>();
 			map[0] = 1;
 		});
@@ -42,7 +42,7 @@ class TestAll{
 		map[0] = 1;	
 		map[3] = 2;
 		map[5] = 0;
-		var gcUsage = Gc.gatherGcUsageFor({
+		var gcUsage = GcUsage.gatherFrom({
 			for(key in map.keys()){
 				map.remove(key);
 			}
@@ -59,7 +59,7 @@ class TestAll{
 		}
 		
 		
-		var gcUsage = Gc.gatherGcUsageFor({
+		var gcUsage = GcUsage.gatherFrom({
 			test.map = new Map<Int,Int>();
 			test.map[0] = 1;	
 		  test.map[3] = 2;
