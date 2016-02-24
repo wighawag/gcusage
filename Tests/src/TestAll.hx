@@ -82,6 +82,19 @@ class TestAll{
 		Assert.equals(0, gcUsage.bytesReserved);
 	}
 	
+	public function testInterfaceAcceptingIntAsFunctionParam(){
+		var impl = new TestImpl();
+		var test = new InterfaceCallTest();
+		var gcUsage = GcUsage.gatherFrom({
+			test.callInterface(impl,3);
+		});
+		Assert.equals(1, gcUsage.numAllocations);
+		Assert.equals(0, gcUsage.numReallocations);
+		Assert.equals(1, gcUsage.numDeallocations);
+		Assert.equals(0, gcUsage.bytesUsed);
+		Assert.equals(0, gcUsage.bytesReserved);
+	}
+	
 	
 	public static function main() {
 		var runner = new Runner();
@@ -92,4 +105,24 @@ class TestAll{
 		runner.run();
 	}
 	public function new() {}
+}
+
+class InterfaceCallTest{
+	public function new(){}
+	public function callInterface(test : TestInterface, i : Int) : Void{
+		test.test(i);
+	}
+
+}
+
+
+interface TestInterface{
+	function test(i : Int) : Void;
+}
+
+class TestImpl implements TestInterface{
+	public function new(){}
+	public function test(i : Int) : Void{
+		//do nothing
+	}
 }

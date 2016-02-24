@@ -5,5 +5,6 @@
 -lib utest
 -D HXCPP_TELEMETRY
 -D HXCPP_STACK_TRACE
+-D HXCPP_STACK_LINE
 
 -cmd bin\cpp\TestAll || bin/cpp/TestAll
