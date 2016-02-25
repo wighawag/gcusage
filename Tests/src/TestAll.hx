@@ -5,29 +5,34 @@ import utest.ui.Report;
 
 class TestAll{
 	
-	public function testArrayofInt(){	
+	public function testArrayofInt(){
+			
 		var gcUsage = GcUsage.gatherFrom({
 			var array = new Array<Int>();
 		});
 		
 		Assert.equals(1, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
-		Assert.equals(0, gcUsage.numDeallocations);
-		Assert.equals(128, gcUsage.bytesUsed);
+		Assert.equals(1, gcUsage.numDeallocations);
+		Assert.equals(0, gcUsage.bytesUsed);
 		Assert.equals(0, gcUsage.bytesReserved);
+		Assert.equals(128, gcUsage.bytesUsedTemporarly);
+		Assert.equals(0, gcUsage.bytesReservedTemporarly);
 	}
 	
 	public function testArrayofIntFirstInsert(){	
 		var gcUsage = GcUsage.gatherFrom({
 			var array = new Array<Int>();
-			array[0] = 1;
+			array.push(1);
 		});
 		
 		Assert.equals(2, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
-		Assert.equals(0, gcUsage.numDeallocations);
-		Assert.equals(128, gcUsage.bytesUsed);
+		Assert.equals(2, gcUsage.numDeallocations);
+		Assert.equals(0, gcUsage.bytesUsed);
 		Assert.equals(0, gcUsage.bytesReserved);
+		Assert.equals(128, gcUsage.bytesUsedTemporarly); 
+		Assert.equals(0, gcUsage.bytesReservedTemporarly);
 	}
 	
 	public function testMapIntIntFirstInsert(){	
@@ -38,9 +43,11 @@ class TestAll{
 		
 		Assert.equals(3, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
-		Assert.equals(0, gcUsage.numDeallocations);
-		Assert.equals(128, gcUsage.bytesUsed);
+		Assert.equals(3, gcUsage.numDeallocations);
+		Assert.equals(0, gcUsage.bytesUsed);
 		Assert.equals(0, gcUsage.bytesReserved);
+		Assert.equals(128, gcUsage.bytesUsedTemporarly);
+		Assert.equals(0, gcUsage.bytesReservedTemporarly);
 	}
 	
 	public function testMapIntIntClearViaKeys(){
@@ -48,6 +55,7 @@ class TestAll{
 		map[0] = 1;	
 		map[3] = 2;
 		map[5] = 0;
+		
 		var gcUsage = GcUsage.gatherFrom({
 			for(key in map.keys()){
 				map.remove(key);
@@ -56,9 +64,11 @@ class TestAll{
 		
 		Assert.equals(3, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
-		Assert.equals(0, gcUsage.numDeallocations);
-		Assert.equals(128, gcUsage.bytesUsed);
+		Assert.equals(3, gcUsage.numDeallocations);
+		Assert.equals(128, gcUsage.bytesUsed); //not sure why?
 		Assert.equals(0, gcUsage.bytesReserved);
+		Assert.equals(128, gcUsage.bytesUsedTemporarly);
+		Assert.equals(0, gcUsage.bytesReservedTemporarly);
 	}
 	
 	public function testMapIntIntClearViaNewMap(){
@@ -77,9 +87,11 @@ class TestAll{
 		
 		Assert.equals(7, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
-		//Assert.equals(2, gcUsage.numDeallocations);
-		Assert.equals(256, gcUsage.bytesUsed);
+		Assert.equals(6, gcUsage.numDeallocations);
+		Assert.equals(128, gcUsage.bytesUsed);
 		Assert.equals(0, gcUsage.bytesReserved);
+		Assert.equals(256, gcUsage.bytesUsedTemporarly);
+		Assert.equals(0, gcUsage.bytesReservedTemporarly); 
 	}
 	
 	public function testInterfaceAcceptingIntAsFunctionParam(){
@@ -90,9 +102,11 @@ class TestAll{
 		});
 		Assert.equals(1, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
-		// Assert.equals(1, gcUsage.numDeallocations); commented as gc.run does not seem to work instantly on travis (linux?)
-		// Assert.equals(0, gcUsage.bytesUsed);
+		Assert.equals(1, gcUsage.numDeallocations); 
+		Assert.equals(128, gcUsage.bytesUsed);//not sure why?
 		Assert.equals(0, gcUsage.bytesReserved);
+		Assert.equals(128, gcUsage.bytesUsedTemporarly);
+		Assert.equals(0, gcUsage.bytesReservedTemporarly);
 	}
 	
 	

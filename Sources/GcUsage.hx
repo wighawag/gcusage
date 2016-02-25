@@ -8,32 +8,22 @@ class GcUsage{
 			return null;
 		}
 		
-		var newExpr = macro {
-		var __gcUsage = @:privateAccess new GcUsage();
-		@:privateAccess __gcUsage.begin();
-	};
-
-	newExpr = append(newExpr,expr);
-	newExpr = append(newExpr,macro {
-		@:privateAccess __gcUsage.end();
-		__gcUsage;
-	});
-	
-	
-	return newExpr;
+		return macro {
+			var __gcUsage = @:privateAccess new GcUsage();
+			@:privateAccess __gcUsage.begin();
+			untyped  __global__.__hxcpp_hxt_ignore_allocs(1); 
+			function f(){
+				untyped  __global__.__hxcpp_hxt_ignore_allocs(-1);
+				$e{expr}
+				@:privateAccess __gcUsage.middle();
+			};
+			f();
+			@:privateAccess __gcUsage.end();
+			__gcUsage;
+		};	
+		
 	}
 	
-	static function append(expr : Expr, exprToAdd : Expr) : Expr{
-		return
-		switch(expr.expr){
-			case EBlock(exprs):
-				exprs.push(exprToAdd);
-				expr;
-			default :
-				expr.expr = EBlock([{pos:expr.pos,expr:expr.expr}, exprToAdd]);
-				expr;
-		}
-	}
 	
 	#if !macro
 	public var numAllocations(default,null) : Int = -1;
@@ -41,12 +31,16 @@ class GcUsage{
 	public var numDeallocations(default,null) : Int = -1;
 	public var bytesUsed(get,never) : Int;
 	public var bytesReserved(get,never) : Int;
+	public var bytesUsedTemporarly(get, never) : Int;
+	public var bytesReservedTemporarly(default, never) : Int;
 	
 	var threadNum : Int = -1;
 	var bytesUsedBefore : Int = 0;
 	var bytesUsedAfter : Int = 0;
 	var bytesReservedBefore : Int = 0;
 	var bytesReservedAfter : Int = 0;
+	var bytesUsedMiddle : Int = 0;
+	var bytesReservedMiddle : Int = 0;
 	
 	private function new(){
 	}
@@ -59,6 +53,14 @@ class GcUsage{
 		return bytesReservedAfter - bytesReservedBefore;
 	}
 	
+	function get_bytesUsedTemporarly() : Int{
+		return bytesUsedMiddle - bytesUsedBefore;
+	}
+	
+	function get_bytesReservedTemporarly() : Int{
+		return bytesReservedMiddle - bytesReservedBefore;
+	}
+	
 	private function begin(){
 		cpp.vm.Gc.run(true);
 		threadNum = untyped  __global__.__hxcpp_hxt_start_telemetry(true, true);
@@ -67,6 +69,12 @@ class GcUsage{
 		bytesReservedBefore = untyped __global__.__hxcpp_gc_reserved_bytes();
 		bytesUsedBefore = untyped __global__.__hxcpp_gc_used_bytes();
 		untyped  __global__.__hxcpp_hxt_ignore_allocs(-1);
+	}
+	
+	private function middle(){
+		cpp.vm.Gc.run(true);
+		bytesUsedMiddle = untyped __global__.__hxcpp_gc_used_bytes();
+		bytesReservedMiddle = untyped __global__.__hxcpp_gc_reserved_bytes();
 	}
 	
 	private function end(){
