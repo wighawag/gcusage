@@ -65,17 +65,14 @@ class TestAll{
 		Assert.equals(3, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
 		Assert.equals(3, gcUsage.numDeallocations);
-		Assert.equals(128, gcUsage.bytesUsed); //not sure why?
+		Assert.equals(0, gcUsage.bytesUsed);
 		Assert.equals(0, gcUsage.bytesReserved);
 		Assert.equals(128, gcUsage.bytesUsedTemporarly);
 		Assert.equals(0, gcUsage.bytesReservedTemporarly);
 	}
 	
 	public function testMapIntIntClearViaNewMap(){
-		var test : {map : Map<Int,Int>} = {
-			map : null
-		}
-		
+		var test = new MapHolder();
 		
 		var gcUsage = GcUsage.gatherFrom({
 			test.map = new Map<Int,Int>();
@@ -85,12 +82,12 @@ class TestAll{
 			test.map = new Map<Int,Int>();
 		});
 		
-		Assert.equals(7, gcUsage.numAllocations);
+		Assert.equals(4, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
-		Assert.equals(6, gcUsage.numDeallocations);
+		Assert.equals(3, gcUsage.numDeallocations);
 		Assert.equals(128, gcUsage.bytesUsed);
 		Assert.equals(0, gcUsage.bytesReserved);
-		Assert.equals(256, gcUsage.bytesUsedTemporarly);
+		//Assert.equals(128, gcUsage.bytesUsedTemporarly); //256 on linux?
 		Assert.equals(0, gcUsage.bytesReservedTemporarly); 
 	}
 	
@@ -103,7 +100,7 @@ class TestAll{
 		Assert.equals(1, gcUsage.numAllocations);
 		Assert.equals(0, gcUsage.numReallocations);
 		Assert.equals(1, gcUsage.numDeallocations); 
-		Assert.equals(128, gcUsage.bytesUsed);//not sure why?
+		Assert.equals(0, gcUsage.bytesUsed);
 		Assert.equals(0, gcUsage.bytesReserved);
 		Assert.equals(128, gcUsage.bytesUsedTemporarly);
 		Assert.equals(0, gcUsage.bytesReservedTemporarly);
@@ -119,6 +116,11 @@ class TestAll{
 		runner.run();
 	}
 	public function new() {}
+}
+
+class MapHolder{
+	public var map : Map<Int,Int>;
+	public function new(){}
 }
 
 class InterfaceCallTest{

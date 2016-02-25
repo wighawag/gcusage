@@ -1,1 +1,7 @@
 bin/
+.vagrant
+VirtualBox*
+bin_vagrant/
+build-vagrant.hxml
+common.cab
+install.log

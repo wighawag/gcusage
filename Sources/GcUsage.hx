@@ -9,19 +9,24 @@ class GcUsage{
 		}
 		
 		return macro {
-			var __gcUsage = @:privateAccess new GcUsage();
-			@:privateAccess __gcUsage.begin();
-			untyped  __global__.__hxcpp_hxt_ignore_allocs(1); 
-			function f(){
-				untyped  __global__.__hxcpp_hxt_ignore_allocs(-1);
-				$e{expr}
-				@:privateAccess __gcUsage.middle();
+			function create(){
+				var gcUsage = @:privateAccess new GcUsage();
+				@:privateAccess gcUsage.begin();
+				untyped  __global__.__hxcpp_hxt_ignore_allocs(1); 
+				function f(){
+					untyped  __global__.__hxcpp_hxt_ignore_allocs(-1);
+					$e{expr}
+					@:privateAccess gcUsage.middle();
+				};
+				f();
+			
+				@:privateAccess gcUsage.clearStack(10);
+				return gcUsage;
 			};
-			f();
+			var __gcUsage = create();
 			@:privateAccess __gcUsage.end();
 			__gcUsage;
-		};	
-		
+		};
 	}
 	
 	
@@ -75,6 +80,14 @@ class GcUsage{
 		cpp.vm.Gc.run(true);
 		bytesUsedMiddle = untyped __global__.__hxcpp_gc_used_bytes();
 		bytesReservedMiddle = untyped __global__.__hxcpp_gc_reserved_bytes();
+	}
+	
+
+	private function clearStack(count:Int, ?nothing:Dynamic):Dynamic
+	{
+		if (count==0)
+				return 0;
+		return clearStack(count-1);
 	}
 	
 	private function end(){
