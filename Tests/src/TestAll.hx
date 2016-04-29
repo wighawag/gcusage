@@ -87,7 +87,7 @@ class TestAll{
 		Assert.equals(3, gcUsage.numDeallocations);
 		Assert.equals(128, gcUsage.bytesUsed);
 		Assert.equals(0, gcUsage.bytesReserved);
-		//Assert.equals(128, gcUsage.bytesUsedTemporarly); //256 on linux?
+		Assert.equals(256, gcUsage.bytesUsedTemporarly);
 		Assert.equals(0, gcUsage.bytesReservedTemporarly); 
 	}
 	
