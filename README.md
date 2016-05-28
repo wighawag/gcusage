@@ -1,4 +1,7 @@
 
+haxe 3.3 : [![travis status](https://travis-ci.org/wighawag/gcusage.svg?branch=3.3)](https://travis-ci.org/wighawag/gcusage/branches)
+
+
 haxe 3.2.1 : [![travis status](https://travis-ci.org/wighawag/gcusage.svg?branch=master)](https://travis-ci.org/wighawag/gcusage)
 
 haxe dev : [![travis status](https://travis-ci.org/wighawag/gcusage.svg?branch=dev)](https://travis-ci.org/wighawag/gcusage/branches)
