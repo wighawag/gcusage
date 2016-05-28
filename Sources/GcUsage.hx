@@ -124,7 +124,7 @@ class GcUsage{
 					numReallocations ++; 
 				}
 			}
-			return null();
+			
 		}
 		
 		')
