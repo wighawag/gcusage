@@ -3,6 +3,7 @@
 -cp Sources
 -cp Tests/src
 -lib utest
+-lib hxcpp:3.2.205
 -D HXCPP_TELEMETRY
 -D HXCPP_STACK_TRACE
 -D HXCPP_STACK_LINE
